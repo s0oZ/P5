@@ -3,13 +3,11 @@ fetch('http://localhost:3000/api/products')
   .then(res => res.json())
   .then(function (data) {
 
-
-    let node = document.getElementById('items').firstElementChild;
-
     let target = document.getElementById('items');
     let content = "";
 
     for (let obokanap of data) {
+      console.log(data);
       let name = obokanap.name;
       let para = obokanap.description;
       let img = obokanap.imageUrl;
