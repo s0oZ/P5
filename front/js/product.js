@@ -7,14 +7,15 @@ fetch(`http://localhost:3000/api/products/${idPage}`)
   .then(res => res.json())
   .then(function (data) {
     console.log(data); 
-  let content = `<img src="${data.imageUrl} alt="${data.altTxt}">`;
+  let content = `<img src="${data.imageUrl}" alt="${data.altTxt}">`;
   let target = document.getElementById('title');
   let target2 = document.getElementById('description');
   let target3 = document.getElementById('price');
   let target4 = document.getElementsByClassName("item__img");
-  console.log(target4);
+  const firstElement = target4[0];
+  console.log(firstElement);
   console.log(target3);
-  //target4.insertAdjacentHTML('beforeend' , content);
+  firstElement.insertAdjacentHTML('beforeend' , content);
   target3.insertAdjacentHTML('beforeend' , data.price);
   target2.insertAdjacentHTML('beforeend' , data.description);
   target.insertAdjacentHTML('beforeend', data.name);
