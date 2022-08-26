@@ -8,6 +8,7 @@ fetch(`http://localhost:3000/api/products/${idPage}`)
   .then(function (data) {
     console.log(data); 
   let content = `<img src="${data.imageUrl}" alt="${data.altTxt}">`;
+  let content2 = "";
   let target = document.getElementById('title');
   let target2 = document.getElementById('description');
   let target3 = document.getElementById('price');
@@ -19,6 +20,11 @@ fetch(`http://localhost:3000/api/products/${idPage}`)
   target3.insertAdjacentHTML('beforeend' , data.price);
   target2.insertAdjacentHTML('beforeend' , data.description);
   target.insertAdjacentHTML('beforeend', data.name);
+  for (let obocolor of data.colors){
+    for ( let k = 0; k < data.colors.length; k++){
+    console.log(obocolor);
+    content += `<option value="${obocolor[k]}">${obocolor[k]}</option>`
+  }}
   })
 
 
