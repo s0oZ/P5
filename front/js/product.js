@@ -1,34 +1,64 @@
 let page = document.location.search;
-
 let searchParams = new URLSearchParams(page);
-let idPage =  searchParams.getAll("id");
-console.log(idPage);
+let idPage = searchParams.get("id");
+let target = document.getElementById("title");
+let target2 = document.getElementById("description");
+let target3 = document.getElementById("price");
+let target4 = document.getElementsByClassName("item__img");
+let color = document.getElementById("colors");
+let quantity = document.getElementById("quantity");
+
 fetch(`http://localhost:3000/api/products/${idPage}`)
-  .then(res => res.json())
+  .then((res) => res.json())
   .then(function (data) {
-    console.log(data); 
-  let content = `<img src="${data.imageUrl}" alt="${data.altTxt}">`;
-  let content2 = "";
-  let target = document.getElementById('title');
-  let target2 = document.getElementById('description');
-  let target3 = document.getElementById('price');
-  let target4 = document.getElementsByClassName("item__img");
-  const firstElement = target4[0];
-  console.log(firstElement);
-  console.log(target3);
-  firstElement.insertAdjacentHTML('beforeend' , content);
-  target3.insertAdjacentHTML('beforeend' , data.price);
-  target2.insertAdjacentHTML('beforeend' , data.description);
-  target.insertAdjacentHTML('beforeend', data.name);
-  for (let obocolor of data.colors){
-    for ( let k = 0; k < data.colors.length; k++){
-    console.log(obocolor);
-    content += `<option value="${obocolor[k]}">${obocolor[k]}</option>`
-  }}
-  })
+    let content = `<img src="${data.imageUrl}" alt="${data.altTxt}">`;
+    let content2 = "";
 
+    const firstElement = target4[0];
+    firstElement.insertAdjacentHTML("beforeend", content);
+    target3.insertAdjacentHTML("beforeend", data.price);
+    target2.insertAdjacentHTML("beforeend", data.description);
+    target.insertAdjacentHTML("beforeend", data.name);
 
-  /*var o = {
+    for (let obocolor of data.colors) {
+      content2 += `<option value="${obocolor}">${obocolor}</option>`;
+    }
+
+    color.insertAdjacentHTML("beforeend", content2);
+  });
+
+let addToCartBtn = document.getElementById("addToCart");
+
+addToCartBtn.addEventListener("click", () => {
+  let cart = [];
+
+  if (localStorage.getItem("cart")) {
+    cart.push(...JSON.parse(localStorage.getItem("cart")));
+  }
+  console.log(quantity.value);
+  if (quantity.value == 0) return alert("faut au moins en prendre");
+  if (quantity.value > 100) return alert("trop de canap");
+  if (color.value === "") return alert("Selectionnez la couleur");
+  console.log(color.value);
+  let product = cart.find(function (item) {
+    item.id === idPage && item.color === color.value;
+  });
+  if (product) {
+    product.quantity.value;
+  } else {
+    cart.push({
+      id: idPage,
+      color: color.value,
+      quantity: quantity.value,
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+});
+
+//json.stringify  envoi
+//json.parse  recup
+/*var o = {
   get dernier() {
     if (this.journal.length > 0) {
       return this.journal[this.journal.length - 1];
@@ -42,9 +72,8 @@ fetch(`http://localhost:3000/api/products/${idPage}`)
 console.log(o.dernier); // "actu"*/
 
 /*var obj = { 'France': 'Paris', 'England': 'London' };
-for (let p of obj) { // TypeError: obj is not iterable*/ 
+for (let p of obj) { // TypeError: obj is not iterable*/
 
-  
 /*var obj = { 'France': 'Paris', 'England': 'London' };
 // On parcourt les noms des propriétés
 for (let country of Object.keys(obj)) {
@@ -55,12 +84,10 @@ for (let country of Object.keys(obj)) {
 for (const [country, capital] of Object.entries(obj))
     console.log(country, capital);*/
 
-
 /*var paramsString = "q=URLUtils.searchParams&topic=api";
 var searchParams = new URLSearchParams(paramsString);
 for (var p of mySearchParams) / (var p of mySearchParams.entries()).*/
 //searchParams.getAll("topic"); // ["api"]
-
 
 /*// Let an <a id="myAnchor" href="/en-US/docs/Location.search?q=123"> element be in the document
 const anchor = document.getElementById("myAnchor");

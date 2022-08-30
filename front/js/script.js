@@ -14,12 +14,12 @@ fetch('http://localhost:3000/api/products')
       let altext = obokanap.altTxt;
       let iid = obokanap._id;
       content += `<a href="./product.html?id=${iid}">
-  <article>
-    <img src="${img}" alt="${altext}">
-    <h3 class="productName">${name}</h3>
-    <p class="productDescription">${para}</p>
-  </article>
-  </a>`
+        <article>
+          <img src="${img}" alt="${altext}">
+          <h3 class="productName">${name}</h3>
+          <p class="productDescription">${para}</p>
+        </article>
+      </a>`
     }
     target.insertAdjacentHTML('beforeend', content);
   })
