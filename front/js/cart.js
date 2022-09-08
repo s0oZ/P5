@@ -3,7 +3,7 @@ console.log(cart);
 // definir le prix grace a l api
 let content = "";
 let quantity = 0;
-let totalprice = 0;
+let targetprice = document.getElementById("totalQuantity");
 let target = document.getElementById("cart__items");
 let articles = [];
 
@@ -17,20 +17,20 @@ cart.map((article) => {
       });
       console.log(articles);
 
-      content += `<article class="cart__item" data-id="${data.id}" data-color="{product - color}">
+      content = `<article class="cart__item" data-id="${article.id}" data-color="${article.color}">
               <div class="cart__item__img">
                 <img src="${data.imageUrl}" alt="Photographie d'un canapé">
               </div>
               <div class="cart__item__content">
                 <div class="cart__item__content__description">
                   <h2>${data.name}</h2>
-                  <p>${articles.price}</p>
-                  <p>"${data.price}"</p>
+                  <p>${article.color}</p>
+                  <p>${data.price}€</p>
                 </div>
                 <div class="cart__item__content__settings">
                   <div class="cart__item__content__settings__quantity">
                     <p>Qté : </p>
-                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${article.quantity}">
                   </div>
                   <div class="cart__item__content__settings__delete">
                     <p class="deleteItem">Supprimer</p>
@@ -39,6 +39,8 @@ cart.map((article) => {
               </div>
             </article>`;
       target.insertAdjacentHTML("beforeend", content);
+      let totalprice = Number(articles.quantity) * Number(data.price);
+      console.log(Number(articles.quantity));
     });
 });
 
