@@ -39,8 +39,8 @@ cart.map((article) => {
               </div>
             </article>`;
       target.insertAdjacentHTML("beforeend", content);
-      let totalprice = Number(articles.quantity) * Number(data.price);
-      console.log(Number(articles.quantity));
+      let totalprice = Number(article.quantity) * Number(data.price);
+      console.log(Number(article.quantity));
     });
 });
 
