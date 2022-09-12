@@ -3,6 +3,8 @@ console.log(cart);
 // definir le prix grace a l api
 let content = "";
 let quantity = 0;
+let totalprice = [];
+let price = 0;
 let targetprice = document.getElementById("totalQuantity");
 let target = document.getElementById("cart__items");
 let articles = [];
@@ -39,9 +41,13 @@ cart.map((article) => {
               </div>
             </article>`;
       target.insertAdjacentHTML("beforeend", content);
-      let totalprice = Number(article.quantity) * Number(data.price);
-      console.log(Number(article.quantity));
+      totalprice.push(Number(article.quantity) * Number(data.price));
     });
+
+  for (i = 0; i <= length.totalprice; i++) {
+    price += totalprice.i;
+  }
+  console.log(price);
 });
 
 /*async function getAllUrls(urls) {
