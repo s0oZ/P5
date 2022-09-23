@@ -103,22 +103,41 @@ let handleSubmit = function (e) {
           isNotEmpty(contact[key]) === false
         ) {
           isFormValid = false;
-          document.getElementById("firstNameErrorMsg").innerHTML = "pas bon";
+          document.getElementById("firstNameErrorMsg").innerHTML =
+            "saisie incoorecte";
         }
         break;
       case "lastName":
-        validName(contact[key]);
-        isNotEmpty(contact[key]);
+        if (
+          validName(contact[key]) === false ||
+          isNotEmpty(contact[key]) === false
+        ) {
+          isFormValid = false;
+          document.getElementById("lastNameErrorMsg").innerHTML =
+            "saisie incorrecte";
+        }
         break;
       case "address":
-        isNotEmpty(contact[key]);
+        if (isNotEmpty(contact[key]) === false) {
+          isFormValid = false;
+          document.getElementById("addressErrorMsg").innerHTML = "champs vide";
+        }
         break;
       case "city":
-        isNotEmpty(contact[key]);
+        if (isNotEmpty(contact[key]) === false) {
+          isFormValid = false;
+          document.getElementById("cityErrorMsg").innerHTML = " champ vide";
+        }
         break;
       case "email":
-        validEmail(contact[key]);
-        isNotEmpty(contact[key]);
+        if (
+          validEmail(contact[key]) === false ||
+          isNotEmpty(contact[key]) === false
+        ) {
+          isFormValid = false;
+          document.getElementById("emailErrorMsg").innerHTML =
+            "ceci n'est pas un email";
+        }
         break;
       default:
         break;
