@@ -35,11 +35,9 @@ addToCartBtn.addEventListener("click", () => {
   if (localStorage.getItem("cart")) {
     cart.push(...JSON.parse(localStorage.getItem("cart")));
   }
-  console.log(quantity.value);
   if (quantity.value == 0) return alert("faut au moins en prendre");
   if (quantity.value > 100) return alert("trop de canap");
   if (color.value === "") return alert("Selectionnez la couleur");
-  console.log(color.value);
   let productExist = cart.find(function (item) {
     return item.id === idPage && item.color === color.value;
   });

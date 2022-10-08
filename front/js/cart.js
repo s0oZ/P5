@@ -67,11 +67,14 @@ cart.map((article) => {
           saveCart(cart);
         });
       }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
 });
 
 let validEmail = function (inputEmail) {
-  let emailRegEx = new RegExp(`^[\w\.]+@([\w]+\.)+[\w]{2,4}$`);
+  let emailRegEx = new RegExp(`/^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$`);
   let testEmail = emailRegEx.test(inputEmail);
   return testEmail;
 };
@@ -142,13 +145,33 @@ let handleSubmit = function (e) {
       default:
         break;
     }
-    console.log(isFormValid);
   });
-  //ajouter a contact les champs de ville et adresse  --  objet
-  //creer le tableau de product qui ne reprends que les Id  -- tableau
-  //faire un objet qui reprends le tableau et l objet puis faire comme ci dessous
+  let productsId = [];
+  cart.forEach((cursor) => {
+    productsId.push(cursor.id);
+  });
+  console.log(productsId);
+  let requestBody = {
+    contact: contact,
+    products: productsId,
+  };
+  console.log(requestBody);
+  fetch(`http://localhost:3000/api/products/order`, {
+    method: "POST",
+    body: JSON.stringify(requestBody),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((res) => {
+    let response = res.json();
+    console.log(response);
+  });
+
+  //.then((response) => response.json())
+  //extraire l order ID  de resJSON
 };
 //au click sur commander, l eventListener de type click , declenche la function manageCommand
+console.log(localStorage.getItem("cart"));
 form.addEventListener("submit", (e) => handleSubmit(e));
 
 // // function validInput(input, regex) {
@@ -174,12 +197,26 @@ form.addEventListener("submit", (e) => handleSubmit(e));
 // au click sur commander , verifier un par un si les champs sont valable
 // si pas conrrect champ d erreur au niveau de l id
 // si correct , ( effacer le message d erreur si affiché) stocker l info dans l objet contact
-//creer le tableau de produit
+//creer le tableau de produit ( refaire une boucle , allez le rechercher dans le localstorage)
 //creer un objet qui contient contact et product
 //faire l'appel Api en method POST (fin d url .../order)
 //dans la reponse de l'appel , on trouve l order Id
 //faire un console.log de cet order id
-//puis faire un .then pour afficher la page confimartion en terminant l url par l order id
+//puis faire un .then pour afficher la page confimartion en terminant l url par l order id(cf page acceuil -> page product)
 //page de confirmation : recuperer l order id dans l url (deja fait en  page product)
 //afficher a l emplacement prevu l order Id
 //vider le localStorage cart
+
+/**
+ *
+ * Expects request to contain:
+ * contact: {
+ *   firstName: string,
+ *   lastName: string,
+ *   address: string,
+ *   city: string,
+ *   email: string
+ * }
+ * products: [string] <-- array of product _id
+ *
+ */
