@@ -1,5 +1,4 @@
 let cart = JSON.parse(localStorage.getItem("cart"));
-
 let content = "";
 let contentprice = "";
 let quantity = 0;
@@ -74,7 +73,7 @@ cart.map((article) => {
 });
 
 let validEmail = function (inputEmail) {
-  let emailRegEx = new RegExp(`/^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$`);
+  let emailRegEx = new RegExp(/^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$/);
   let testEmail = emailRegEx.test(inputEmail);
   return testEmail;
 };
@@ -162,29 +161,22 @@ let handleSubmit = function (e) {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((res) => {
-    let response = res.json();
-    console.log(response);
-  });
-
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data);
+      window.location.replace(
+        `/front/html/confirmation.html?orderId=${data.orderId}`
+      );
+    });
   //.then((response) => response.json())
   //extraire l order ID  de resJSON
 };
 //au click sur commander, l eventListener de type click , declenche la function manageCommand
 console.log(localStorage.getItem("cart"));
 form.addEventListener("submit", (e) => handleSubmit(e));
-
-// // function validInput(input, regex) {
-// //   let testInput = regex.test(input.value);
-// //   let p = input.nextElementSibling;
-// //   if (testInput) {
-// //     p.textcontent = "Champ Valide";
-// //     return true;
-// //   } else {
-// //     p.textcontent = "Champ non valide";
-// //     return false;
-// //   }
-// //}
 
 // let firstName = document.getElementById("firstName");
 // let inputFirstName = firstName.addEventlistener("change", function () {
@@ -193,12 +185,6 @@ form.addEventListener("submit", (e) => handleSubmit(e));
 
 //onblur ou onchange
 
-// au click sur commander , recupere la valeur de chaque champ
-// au click sur commander , verifier un par un si les champs sont valable
-// si pas conrrect champ d erreur au niveau de l id
-// si correct , ( effacer le message d erreur si affiché) stocker l info dans l objet contact
-//creer le tableau de produit ( refaire une boucle , allez le rechercher dans le localstorage)
-//creer un objet qui contient contact et product
 //faire l'appel Api en method POST (fin d url .../order)
 //dans la reponse de l'appel , on trouve l order Id
 //faire un console.log de cet order id
