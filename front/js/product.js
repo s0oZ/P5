@@ -31,9 +31,8 @@ let addToCartBtn = document.getElementById("addToCart");
 
 addToCartBtn.addEventListener("click", () => {
   let cart = [];
-
   if (localStorage.getItem("cart")) {
-    cart.push(...JSON.parse(localStorage.getItem("cart")));
+    cart.push(...JSON.parse(localStorage.getItem("cart"))); // a revoir
   }
   if (quantity.value == 0) return alert("faut au moins en prendre");
   if (quantity.value > 100) return alert("trop de canap");
@@ -54,3 +53,4 @@ addToCartBtn.addEventListener("click", () => {
 
   localStorage.setItem("cart", JSON.stringify(cart));
 });
+//rajouter une fonction pour la validation de l'ajout d'un canapé

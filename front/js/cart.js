@@ -106,7 +106,7 @@ let handleSubmit = function (e) {
         ) {
           isFormValid = false;
           document.getElementById("firstNameErrorMsg").innerHTML =
-            "saisie incoorecte";
+            "saisie incorrecte";
         }
         break;
       case "lastName":
@@ -117,7 +117,7 @@ let handleSubmit = function (e) {
           isFormValid = false;
           document.getElementById("lastNameErrorMsg").innerHTML =
             "saisie incorrecte";
-        }
+        } //else , emplacement ou mesage d erreur , innertHTML d un texte vide (pour effacer)
         break;
       case "address":
         if (isNotEmpty(contact[key]) === false) {
@@ -170,13 +170,19 @@ let handleSubmit = function (e) {
       window.location.replace(
         `/front/html/confirmation.html?orderId=${data.orderId}`
       );
+      //verification de isFormValid !!
+      //et .catch a faire
     });
-  //.then((response) => response.json())
-  //extraire l order ID  de resJSON
 };
 //au click sur commander, l eventListener de type click , declenche la function manageCommand
 console.log(localStorage.getItem("cart"));
-form.addEventListener("submit", (e) => handleSubmit(e));
+form.addEventListener("submit", (e) => {
+  if ((isFormValid = true)) {
+    handleSubmit(e);
+  } else {
+    return alert("commande invalide");
+  }
+});
 
 // let firstName = document.getElementById("firstName");
 // let inputFirstName = firstName.addEventlistener("change", function () {
@@ -192,17 +198,3 @@ form.addEventListener("submit", (e) => handleSubmit(e));
 //page de confirmation : recuperer l order id dans l url (deja fait en  page product)
 //afficher a l emplacement prevu l order Id
 //vider le localStorage cart
-
-/**
- *
- * Expects request to contain:
- * contact: {
- *   firstName: string,
- *   lastName: string,
- *   address: string,
- *   city: string,
- *   email: string
- * }
- * products: [string] <-- array of product _id
- *
- */
