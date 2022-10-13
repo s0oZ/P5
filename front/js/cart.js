@@ -147,9 +147,11 @@ let handleSubmit = function (e) {
   });
   let productsId = [];
   cart.forEach((cursor) => {
-    productsId.push(cursor.id);
+    if (isFormValid == false) {
+      productsId.push(cursor.id);
+      return alert("Commande valide");
+    }
   });
-  console.log(productsId);
   let requestBody = {
     contact: contact,
     products: productsId,
@@ -177,11 +179,7 @@ let handleSubmit = function (e) {
 //au click sur commander, l eventListener de type click , declenche la function manageCommand
 console.log(localStorage.getItem("cart"));
 form.addEventListener("submit", (e) => {
-  if ((isFormValid = true)) {
-    handleSubmit(e);
-  } else {
-    return alert("commande invalide");
-  }
+  handleSubmit(e);
 });
 
 // let firstName = document.getElementById("firstName");

@@ -43,12 +43,14 @@ addToCartBtn.addEventListener("click", () => {
   if (productExist) {
     productExist.quantity =
       parseInt(productExist.quantity) + parseInt(quantity.value);
+    return alert("ajout au panier");
   } else {
     cart.push({
       id: idPage,
       color: color.value,
       quantity: quantity.value,
     });
+    return alert("quantité mise à jour");
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
