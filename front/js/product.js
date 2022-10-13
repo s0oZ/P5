@@ -34,7 +34,7 @@ addToCartBtn.addEventListener("click", () => {
   //ajout d'un model aux paniers
   let cart = [];
   if (localStorage.getItem("cart")) {
-    cart.push(...JSON.parse(localStorage.getItem("cart"))); // a revoir
+    cart.push(...JSON.parse(localStorage.getItem("cart")));
   }
   if (quantity.value == 0) return alert("faut au moins en prendre"); //differentes alertes au cas ou les conditions ne sons pas respecter
   if (quantity.value > 100) return alert("trop de canap");

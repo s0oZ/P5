@@ -117,6 +117,8 @@ let handleSubmit = function (e) {
           isFormValid = false;
           document.getElementById("lastNameErrorMsg").innerHTML =
             "saisie incorrecte";
+        } else {
+          document.getElementById("lastNameErrorMsg").innerHTML = "";
         } //else , emplacement ou mesage d erreur , innertHTML d un texte vide (pour effacer)
         break;
       case "address":
@@ -147,16 +149,14 @@ let handleSubmit = function (e) {
   });
   let productsId = [];
   cart.forEach((cursor) => {
-    if (isFormValid == false) {
-      productsId.push(cursor.id);
-      return alert("Commande valide");
-    }
+    productsId.push(cursor.id);
   });
   let requestBody = {
     contact: contact,
     products: productsId,
   };
   console.log(requestBody);
+  if (!isFormValid) return;
   fetch(`http://localhost:3000/api/products/order`, {
     method: "POST",
     body: JSON.stringify(requestBody),
@@ -172,8 +172,9 @@ let handleSubmit = function (e) {
       window.location.replace(
         `/front/html/confirmation.html?orderId=${data.orderId}`
       );
-      //verification de isFormValid !!
-      //et .catch a faire
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };
 //au click sur commander, l eventListener de type click , declenche la function manageCommand
