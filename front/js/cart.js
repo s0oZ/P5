@@ -6,17 +6,19 @@ let totalprice = 0;
 let targetQuantity = document.getElementById("totalQuantity");
 let targetprice = document.getElementById("totalPrice");
 let target = document.getElementById("cart__items");
-let articles = [];
+// let articles = [];
 let form = document.querySelector(".cart__order__form");
 
 cart.map((article) => {
-  fetch(`http://localhost:3000/api/products/${article.id}`) //recuperation des donnée de l AP
+  //article ,localstorage
+  fetch(`http://localhost:3000/api/products/${article.id}`) //recuperation des donnée de l API pour recupérer le prix
     .then((res) => res.json()) //traduction en Json
     .then((data) => {
-      articles.push({
-        //boucle des données
-        ...data,
-      });
+      // data, API
+      // articles.push({
+      //   //boucle des données
+      //   ...data,            // opérateur de décomposition/spread
+      // });
       //partie HTML integré a la page
       content = `<article class="cart__item" data-id="${article.id}" data-color="${article.color}">    
               <div class="cart__item__img">
@@ -58,7 +60,7 @@ cart.map((article) => {
           let cartId = cartItem.getAttribute("data-id");
           let cartColor = cartItem.getAttribute("data-color");
           cartItem.remove();
-          cart = cart.filter((p) => p.id !== cartId || p.color !== cartColor);
+          cart = cart.filter((p) => p.id !== cartId || p.color !== cartColor); // cheking de chaque canapé pour garder ceux qui ne correspondent pas aux deux critere differents
           function saveCart(cart) {
             localStorage.setItem("cart", JSON.stringify(cart));
             targetQuantity.innerHTML = quantity;
@@ -108,6 +110,8 @@ let handleSubmit = function (e) {
           isFormValid = false;
           document.getElementById("firstNameErrorMsg").innerHTML =
             "saisie incorrecte";
+        } else {
+          document.getElementById("firstNameErrorMsg").innerHTML = "";
         }
         break;
       case "lastName":
@@ -126,12 +130,16 @@ let handleSubmit = function (e) {
         if (isNotEmpty(contact[key]) === false) {
           isFormValid = false;
           document.getElementById("addressErrorMsg").innerHTML = "champs vide";
+        } else {
+          document.getElementById("addressErrorMsg").innerHTML = "";
         }
         break;
       case "city":
         if (isNotEmpty(contact[key]) === false) {
           isFormValid = false;
           document.getElementById("cityErrorMsg").innerHTML = " champ vide";
+        } else {
+          document.getElementById("cityErrorMsg").innerHTML = "";
         }
         break;
       case "email":
@@ -142,12 +150,15 @@ let handleSubmit = function (e) {
           isFormValid = false;
           document.getElementById("emailErrorMsg").innerHTML =
             "ceci n'est pas un email";
+        } else {
+          document.getElementById("emailErrorMsg").innerHTML = "";
         }
         break;
       default:
         break;
     }
-  }); // creation du contact
+  });
+  // creation de l objet contact + productsId dans request body
   let productsId = [];
   cart.forEach((cursor) => {
     productsId.push(cursor.id);
@@ -177,8 +188,8 @@ let handleSubmit = function (e) {
       console.log(error);
     });
 };
-//au click sur commander, l eventListener de type click , declenche la function manageCommand
 console.log(localStorage.getItem("cart"));
+//envoi du formulaire
 form.addEventListener("submit", (e) => {
   handleSubmit(e);
 });

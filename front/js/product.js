@@ -46,7 +46,6 @@ addToCartBtn.addEventListener("click", () => {
     // ppush d un Kanap dans le panier si le modele n'existe pas dans le panier
     productExist.quantity =
       parseInt(productExist.quantity) + parseInt(quantity.value);
-    return alert("ajout au panier");
   } else {
     cart.push({
       // mise a jour de la quantity si le kanap est deja existant dans le panier avec la bonne couleur
@@ -55,6 +54,7 @@ addToCartBtn.addEventListener("click", () => {
       quantity: quantity.value,
     });
   }
+  alert("ajout au panier");
 
   localStorage.setItem("cart", JSON.stringify(cart));
 });
