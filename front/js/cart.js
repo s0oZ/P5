@@ -1,4 +1,4 @@
-let cart = JSON.parse(localStorage.getItem("cart"));
+let cart = JSON.parse(localStorage.getItem("cart")); //déclaration des variables
 let content = "";
 let contentprice = "";
 let quantity = 0;
@@ -10,14 +10,15 @@ let articles = [];
 let form = document.querySelector(".cart__order__form");
 
 cart.map((article) => {
-  fetch(`http://localhost:3000/api/products/${article.id}`)
-    .then((res) => res.json())
+  fetch(`http://localhost:3000/api/products/${article.id}`) //recuperation des donnée de l AP
+    .then((res) => res.json()) //traduction en Json
     .then((data) => {
       articles.push({
+        //boucle des données
         ...data,
       });
-
-      content = `<article class="cart__item" data-id="${article.id}" data-color="${article.color}">
+      //partie HTML integré a la page
+      content = `<article class="cart__item" data-id="${article.id}" data-color="${article.color}">    
               <div class="cart__item__img">
                 <img src="${data.imageUrl}" alt="Photographie d'un canapé">
               </div>
@@ -41,7 +42,7 @@ cart.map((article) => {
       target.insertAdjacentHTML("beforeend", content);
 
       totalprice += parseInt(article.quantity) * parseInt(data.price);
-
+      //fonctions pour mettre a jour le prix et la quantity
       quantity += parseInt(article.quantity);
     })
     .then(() => {
@@ -71,18 +72,18 @@ cart.map((article) => {
       console.error("Error:", error);
     });
 });
-
+//deux regex pour le formulaire
 let validEmail = function (inputEmail) {
   let emailRegEx = new RegExp(/^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$/);
   let testEmail = emailRegEx.test(inputEmail);
   return testEmail;
 };
-console.log(form);
 let validName = function (input) {
   let lastNameRegex = new RegExp(/^[a-zA-Z-]+$/);
   console.log(lastNameRegex.test(input));
   return lastNameRegex.test(input);
 };
+// fonction pour evité les champs vide
 let isNotEmpty = function (input) {
   return input.length > 0;
 };
@@ -96,7 +97,7 @@ let handleSubmit = function (e) {
     city: document.getElementById("city").value,
     email: document.getElementById("email").value,
   };
-
+  // sitcwh permettant  la verification de la saisie de l user , ainsi que d afficher un message d erreur si cela ne remplie pas les conditions
   Object.keys(contact).map((key) => {
     switch (key) {
       case "firstName":
@@ -146,7 +147,7 @@ let handleSubmit = function (e) {
       default:
         break;
     }
-  });
+  }); // creation du contact
   let productsId = [];
   cart.forEach((cursor) => {
     productsId.push(cursor.id);
@@ -155,8 +156,7 @@ let handleSubmit = function (e) {
     contact: contact,
     products: productsId,
   };
-  console.log(requestBody);
-  if (!isFormValid) return;
+  if (!isFormValid) return; // si le formulaire ne corresponds pas le processus se stop et il n y a pas d'appel fetch
   fetch(`http://localhost:3000/api/products/order`, {
     method: "POST",
     body: JSON.stringify(requestBody),
@@ -166,7 +166,7 @@ let handleSubmit = function (e) {
   })
     .then((res) => {
       return res.json();
-    })
+    }) //transmition de l id dans l url
     .then((data) => {
       console.log(data);
       window.location.replace(
@@ -182,18 +182,3 @@ console.log(localStorage.getItem("cart"));
 form.addEventListener("submit", (e) => {
   handleSubmit(e);
 });
-
-// let firstName = document.getElementById("firstName");
-// let inputFirstName = firstName.addEventlistener("change", function () {
-//   validInput(firstName, validName);
-// });
-
-//onblur ou onchange
-
-//faire l'appel Api en method POST (fin d url .../order)
-//dans la reponse de l'appel , on trouve l order Id
-//faire un console.log de cet order id
-//puis faire un .then pour afficher la page confimartion en terminant l url par l order id(cf page acceuil -> page product)
-//page de confirmation : recuperer l order id dans l url (deja fait en  page product)
-//afficher a l emplacement prevu l order Id
-//vider le localStorage cart

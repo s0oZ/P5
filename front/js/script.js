@@ -1,9 +1,9 @@
-fetch("http://localhost:3000/api/products")
+fetch("http://localhost:3000/api/products") // appel de l api grace a la fonction fetch
   .then((res) => res.json())
   .then(function (data) {
-    let target = document.getElementById("items");
+    let target = document.getElementById("items"); //création des variables
     let content = "";
-
+    //boucle permettant d afficher autant de canapé qu'il y en a dans l API
     for (let obokanap of data) {
       let name = obokanap.name;
       let para = obokanap.description;

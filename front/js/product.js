@@ -58,4 +58,3 @@ addToCartBtn.addEventListener("click", () => {
 
   localStorage.setItem("cart", JSON.stringify(cart));
 });
-//rajouter une fonction pour la validation de l'ajout d'un canapé
