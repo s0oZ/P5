@@ -65,15 +65,26 @@ cart.map((article) => {
             localStorage.setItem("cart", JSON.stringify(cart));
             targetQuantity.innerHTML = quantity;
             targetprice.innerHTML = totalprice;
+            window.location.reload();
           }
           saveCart(cart);
         });
       }
     })
+    .then(() => {
+      let changeQuantity = [...document.querySelectorAll("itemQuantity")];
+      console.log(changeQuantity);
+      changeQuantity.map((input) => {
+        input.addEventListener("change", (e) => {
+          console.log(e.target);
+        });
+      });
+    })
     .catch((error) => {
       console.error("Error:", error);
     });
 });
+
 //deux regex pour le formulaire
 let validEmail = function (inputEmail) {
   let emailRegEx = new RegExp(/^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$/);

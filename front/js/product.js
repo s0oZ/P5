@@ -36,8 +36,8 @@ addToCartBtn.addEventListener("click", () => {
   if (localStorage.getItem("cart")) {
     cart.push(...JSON.parse(localStorage.getItem("cart")));
   }
-  if (quantity.value == 0) return alert("faut au moins en prendre"); //differentes alertes au cas ou les conditions ne sons pas respecter
-  if (quantity.value > 100) return alert("trop de canap");
+  if (quantity.value == 0) return alert("Quantité insuffisante"); //differentes alertes au cas ou les conditions ne sons pas respecter
+  if (quantity.value > 100) return alert("100 canapés maximum");
   if (color.value === "") return alert("Selectionnez la couleur");
   let productExist = cart.find(function (item) {
     return item.id === idPage && item.color === color.value;
@@ -54,7 +54,7 @@ addToCartBtn.addEventListener("click", () => {
       quantity: quantity.value,
     });
   }
-  alert("ajout au panier");
+  alert("Canapé aujouté au panier");
 
   localStorage.setItem("cart", JSON.stringify(cart));
 });
