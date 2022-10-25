@@ -72,10 +72,10 @@ cart.map((article) => {
       }
     })
     .then(() => {
-      let changeQuantity = [...document.querySelectorAll("itemQuantity")];
+      let changeQuantity = document.querySelectorAll(".itemQuantity");
       console.log(changeQuantity);
       changeQuantity.map((input) => {
-        input.addEventListener("change", (e) => {
+        input.addEventListener("onkeyup", (e) => {
           console.log(e.target);
         });
       });
