@@ -59,7 +59,6 @@ cart.map((article) => {
           console.log(e.target.value);
           console.log(article.quantity);
           console.log(cartColor);
-          cart = cart.filter((p) => p.id == cartId || p.color == cartColor);
           function saveCart(cart) {
             localStorage.setItem("cart", JSON.stringify(cart));
             targetQuantity.innerHTML = e.target.value;
