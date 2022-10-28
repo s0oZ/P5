@@ -48,6 +48,33 @@ cart.map((article) => {
       quantity += parseInt(article.quantity);
     })
     .then(() => {
+      let changeQuantity = document.querySelectorAll(".itemQuantity");
+      console.log(changeQuantity);
+      changeQuantity.forEach((input) => {
+        input.addEventListener("change", (e) => {
+          let cartItem = input.closest(".cart__item");
+          let cartId = cartItem.getAttribute("data-id");
+          let cartColor = cartItem.getAttribute("data-color");
+          article.quantity = e.target.value;
+          console.log(e.target.value);
+          console.log(article.quantity);
+          console.log(cartColor);
+          cart = cart.filter((p) => p.id == cartId || p.color == cartColor);
+          function saveCart(cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+            targetQuantity.innerHTML = e.target.value;
+            targetprice.innerHTML = totalprice;
+            window.location.reload();
+          }
+          saveCart(cart);
+          localStorage.setItem("cart", JSON.stringify(cart));
+          console.log(cart);
+
+          // window.location.reload();
+        });
+      });
+    })
+    .then(() => {
       targetQuantity.innerHTML = quantity;
       targetprice.innerHTML = totalprice;
     })
@@ -71,17 +98,9 @@ cart.map((article) => {
         });
       }
     })
-    .then(() => {
-      let changeQuantity = document.querySelectorAll(".itemQuantity");
-      console.log(changeQuantity);
-      changeQuantity.map((input) => {
-        input.addEventListener("onkeyup", (e) => {
-          console.log(e.target);
-        });
-      });
-    })
     .catch((error) => {
-      console.error("Error:", error);
+      console.log(error);
+      alert("problèmes de connexion");
     });
 });
 
@@ -191,9 +210,7 @@ let handleSubmit = function (e) {
     }) //transmition de l id dans l url
     .then((data) => {
       console.log(data);
-      window.location.replace(
-        `/front/html/confirmation.html?orderId=${data.orderId}`
-      );
+      window.location.href = `/confirmation.html?orderId=${data.orderId}`;
     })
     .catch((error) => {
       console.log(error);
