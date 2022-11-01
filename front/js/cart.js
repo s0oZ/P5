@@ -9,17 +9,19 @@ let target = document.getElementById("cart__items");
 // let articles = [];
 let form = document.querySelector(".cart__order__form");
 
+// on extrait la fonction saveCart car elle peut servir 2 fois, en lui passant en argument cart et la quantité à mettre à jour dans cart
+function saveCart(cart, quantity) {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  targetQuantity.innerHTML = quantity;
+  targetprice.innerHTML = totalprice;
+  window.location.reload();
+}
+
 cart.map((article) => {
   //article ,localstorage
   fetch(`http://localhost:3000/api/products/${article.id}`) //recuperation des donnée de l API pour recupérer le prix
     .then((res) => res.json()) //traduction en Json
     .then((data) => {
-      // data, API
-      // articles.push({
-      //   //boucle des données
-      //   ...data,            // opérateur de décomposition/spread
-      // });
-      //partie HTML integré a la page
       content = `<article class="cart__item" data-id="${article.id}" data-color="${article.color}">    
               <div class="cart__item__img">
                 <img src="${data.imageUrl}" alt="Photographie d'un canapé">
@@ -59,14 +61,8 @@ cart.map((article) => {
           console.log(e.target.value);
           console.log(article.quantity);
           console.log(cartColor);
-          function saveCart(cart) {
-            localStorage.setItem("cart", JSON.stringify(cart));
-            targetQuantity.innerHTML = e.target.value;
-            targetprice.innerHTML = totalprice;
-            window.location.reload();
-          }
-          saveCart(cart);
-          localStorage.setItem("cart", JSON.stringify(cart));
+          saveCart(cart, e.target.value);
+          // localStorage.setItem("cart", JSON.stringify(cart));  // déjà fait dans saveCart
           console.log(cart);
 
           // window.location.reload();
@@ -87,13 +83,7 @@ cart.map((article) => {
           let cartColor = cartItem.getAttribute("data-color");
           cartItem.remove();
           cart = cart.filter((p) => p.id !== cartId || p.color !== cartColor); // cheking de chaque canapé pour garder ceux qui ne correspondent pas aux deux critere differents
-          function saveCart(cart) {
-            localStorage.setItem("cart", JSON.stringify(cart));
-            targetQuantity.innerHTML = quantity;
-            targetprice.innerHTML = totalprice;
-            window.location.reload();
-          }
-          saveCart(cart);
+          saveCart(cart, quantity);
         });
       }
     })
@@ -209,7 +199,7 @@ let handleSubmit = function (e) {
     }) //transmition de l id dans l url
     .then((data) => {
       console.log(data);
-      window.location.href = `/confirmation.html?orderId=${data.orderId}`;
+      window.location.href = `./confirmation.html?orderId=${data.orderId}`;
     })
     .catch((error) => {
       console.log(error);
