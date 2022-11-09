@@ -10,27 +10,26 @@ let target = document.getElementById("cart__items");
 let form = document.querySelector(".cart__order__form");
 
 // on extrait la fonction saveCart car elle peut servir 2 fois, en lui passant en argument cart et la quantité à mettre à jour dans cart
-function saveCart(cart, quantity) {
+function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
-  targetQuantity.innerHTML = quantity;
-  targetprice.innerHTML = totalprice;
-  window.location.reload();
+  // window.location.reload();
 }
 
 cart.map((article) => {
   //article ,localstorage
   fetch(`http://localhost:3000/api/products/${article.id}`) //recuperation des donnée de l API pour recupérer le prix
     .then((res) => res.json()) //traduction en Json
-    .then((data) => {
+    .then((dataAPI) => {
+      //<!-- le prix vient de l'API  -->
       content = `<article class="cart__item" data-id="${article.id}" data-color="${article.color}">    
               <div class="cart__item__img">
-                <img src="${data.imageUrl}" alt="Photographie d'un canapé">
+                <img src="${dataAPI.imageUrl}" alt="Photographie d'un canapé">
               </div>
               <div class="cart__item__content">
                 <div class="cart__item__content__description">
-                  <h2>${data.name}</h2>
+                  <h2>${dataAPI.name}</h2>
                   <p>${article.color}</p>
-                  <p>${data.price}€</p>
+                  <p>${dataAPI.price}€</p>     
                 </div>
                 <div class="cart__item__content__settings">
                   <div class="cart__item__content__settings__quantity">
@@ -45,7 +44,7 @@ cart.map((article) => {
             </article>`;
       target.insertAdjacentHTML("beforeend", content);
 
-      totalprice += parseInt(article.quantity) * parseInt(data.price);
+      totalprice += parseInt(article.quantity) * parseInt(dataAPI.price);
       //fonctions pour mettre a jour le prix et la quantity
       quantity += parseInt(article.quantity);
     })
@@ -57,13 +56,14 @@ cart.map((article) => {
           let cartItem = input.closest(".cart__item");
           let cartId = cartItem.getAttribute("data-id");
           let cartColor = cartItem.getAttribute("data-color");
-          article.quantity = e.target.value;
-          console.log(e.target.value);
-          console.log(article.quantity);
-          console.log(cartColor);
-          saveCart(cart, e.target.value);
-          // localStorage.setItem("cart", JSON.stringify(cart));  // déjà fait dans saveCart
+          cart.forEach((item) => {
+            console.log(item);
+          });
           console.log(cart);
+          // boucle sur cart avec un foreach mettre un if pour retrouvé l emplacement ou
+          //le tour de boucle vaux cartId cartColor pui a cet emplacement la changer la quantity par e.target.value
+          article.quantity = e.target.value;
+          saveCart(cart);
 
           // window.location.reload();
         });
@@ -83,7 +83,7 @@ cart.map((article) => {
           let cartColor = cartItem.getAttribute("data-color");
           cartItem.remove();
           cart = cart.filter((p) => p.id !== cartId || p.color !== cartColor); // cheking de chaque canapé pour garder ceux qui ne correspondent pas aux deux critere differents
-          saveCart(cart, quantity);
+          saveCart(cart);
         });
       }
     })

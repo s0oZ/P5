@@ -43,7 +43,7 @@ addToCartBtn.addEventListener("click", () => {
     return item.id === idPage && item.color === color.value;
   });
   if (productExist) {
-    // ppush d un Kanap dans le panier si le modele n'existe pas dans le panier
+    // push d un Kanap dans le panier si le modele n'existe pas dans le panier
     productExist.quantity =
       parseInt(productExist.quantity) + parseInt(quantity.value);
   } else {
