@@ -57,6 +57,9 @@ cart.map((article) => {
           let cartId = cartItem.getAttribute("data-id");
           let cartColor = cartItem.getAttribute("data-color");
           cart.forEach((item) => {
+            if (item.id == cartId && item.color == cartColor) {
+              item.quantity = e.target.value;
+            }
             console.log(item);
           });
           console.log(cart);
@@ -65,7 +68,7 @@ cart.map((article) => {
           article.quantity = e.target.value;
           saveCart(cart);
 
-          // window.location.reload();
+          window.location.reload();
         });
       });
     })
