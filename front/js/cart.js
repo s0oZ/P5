@@ -12,7 +12,26 @@ let form = document.querySelector(".cart__order__form");
 // on extrait la fonction saveCart car elle peut servir 2 fois, en lui passant en argument cart et la quantité à mettre à jour dans cart
 function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
-  // window.location.reload();
+}
+function displayTotalQuantity() {
+  let quantity = 0;
+  cart.forEach((c) => {
+    quantity += parseInt(c.quantity);
+  });
+  targetQuantity.innerHTML = quantity;
+}
+function displayTotalPrice() {
+  let totalprice = 0;
+  cart.forEach((c) => {
+    fetch(`http://localhost:3000/api/products/${c.id}`)
+      .then((res) => res.json())
+      .then((dataAPI) => {
+        totalprice += parseInt(c.quantity) * parseInt(dataAPI.price);
+      })
+      .then(() => {
+        targetprice.innerHTML = totalprice;
+      });
+  });
 }
 
 cart.map((article) => {
@@ -57,18 +76,14 @@ cart.map((article) => {
           let cartId = cartItem.getAttribute("data-id");
           let cartColor = cartItem.getAttribute("data-color");
           cart.forEach((item) => {
-            if (item.id == cartId && item.color == cartColor) {
+            if (item.id === cartId && item.color === cartColor) {
               item.quantity = e.target.value;
             }
-            console.log(item);
           });
           console.log(cart);
-          // boucle sur cart avec un foreach mettre un if pour retrouvé l emplacement ou
-          //le tour de boucle vaux cartId cartColor pui a cet emplacement la changer la quantity par e.target.value
-          article.quantity = e.target.value;
           saveCart(cart);
-
-          window.location.reload();
+          displayTotalPrice();
+          displayTotalQuantity();
         });
       });
     })
@@ -78,7 +93,6 @@ cart.map((article) => {
     })
     .then(() => {
       let suppBtn = document.getElementsByClassName("deleteItem");
-
       for (let btn of suppBtn) {
         btn.addEventListener("click", () => {
           let cartItem = btn.closest(".cart__item");
@@ -87,6 +101,8 @@ cart.map((article) => {
           cartItem.remove();
           cart = cart.filter((p) => p.id !== cartId || p.color !== cartColor); // cheking de chaque canapé pour garder ceux qui ne correspondent pas aux deux critere differents
           saveCart(cart);
+          displayTotalPrice();
+          displayTotalQuantity();
         });
       }
     })
@@ -95,7 +111,6 @@ cart.map((article) => {
       alert("problèmes de connexion");
     });
 });
-
 //deux regex pour le formulaire
 let validEmail = function (inputEmail) {
   let emailRegEx = new RegExp(/^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$/);
@@ -189,24 +204,28 @@ let handleSubmit = function (e) {
     contact: contact,
     products: productsId,
   };
-  if (!isFormValid) return; // si le formulaire ne corresponds pas le processus se stop et il n y a pas d'appel fetch
-  fetch(`http://localhost:3000/api/products/order`, {
-    method: "POST",
-    body: JSON.stringify(requestBody),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => {
-      return res.json();
-    }) //transmition de l id dans l url
-    .then((data) => {
-      console.log(data);
-      window.location.href = `./confirmation.html?orderId=${data.orderId}`;
+  if (isFormValid) {
+    // appel seulement si le formulaire est valid
+    fetch(`http://localhost:3000/api/products/order`, {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((res) => {
+        return res.json();
+      }) //transmition de l id dans l url
+      .then((data) => {
+        console.log(data);
+        window.location.href = `./confirmation.html?orderId=${data.orderId}`;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    alert("Formulaire non valide");
+  }
 };
 console.log(localStorage.getItem("cart"));
 //envoi du formulaire

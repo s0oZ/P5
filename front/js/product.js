@@ -24,12 +24,10 @@ fetch(`http://localhost:3000/api/products/${idPage}`) //appel API grace a la met
       //Boucle permettant l'affichage de plusieurs couleurs d un meme modele
       content2 += `<option value="${obocolor}">${obocolor}</option>`;
     }
-
     color.insertAdjacentHTML("beforeend", content2);
   });
 
 let addToCartBtn = document.getElementById("addToCart");
-
 addToCartBtn.addEventListener("click", () => {
   //ajout d'un model aux paniers
   let cart = [];
